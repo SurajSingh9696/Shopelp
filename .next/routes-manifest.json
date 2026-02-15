@@ -1,0 +1,219 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/categories/[id]",
+      "regex": "^/api/categories/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/categories/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/items/[id]",
+      "regex": "^/api/items/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/items/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/purchases/[id]",
+      "regex": "^/api/purchases/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/purchases/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api/analytics",
+      "regex": "^/api/analytics(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/analytics(?:/)?$"
+    },
+    {
+      "page": "/api/auth/login",
+      "regex": "^/api/auth/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/login(?:/)?$"
+    },
+    {
+      "page": "/api/auth/logout",
+      "regex": "^/api/auth/logout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/logout(?:/)?$"
+    },
+    {
+      "page": "/api/auth/me",
+      "regex": "^/api/auth/me(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/me(?:/)?$"
+    },
+    {
+      "page": "/api/auth/refresh",
+      "regex": "^/api/auth/refresh(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/refresh(?:/)?$"
+    },
+    {
+      "page": "/api/auth/register",
+      "regex": "^/api/auth/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/register(?:/)?$"
+    },
+    {
+      "page": "/api/categories",
+      "regex": "^/api/categories(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/categories(?:/)?$"
+    },
+    {
+      "page": "/api/items",
+      "regex": "^/api/items(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/items(?:/)?$"
+    },
+    {
+      "page": "/api/price-history",
+      "regex": "^/api/price\\-history(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/price\\-history(?:/)?$"
+    },
+    {
+      "page": "/api/purchases",
+      "regex": "^/api/purchases(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/purchases(?:/)?$"
+    },
+    {
+      "page": "/api/reports",
+      "regex": "^/api/reports(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/reports(?:/)?$"
+    },
+    {
+      "page": "/api/selling-prices",
+      "regex": "^/api/selling\\-prices(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/selling\\-prices(?:/)?$"
+    },
+    {
+      "page": "/auth/login",
+      "regex": "^/auth/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/login(?:/)?$"
+    },
+    {
+      "page": "/auth/register",
+      "regex": "^/auth/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/register(?:/)?$"
+    },
+    {
+      "page": "/dashboard",
+      "regex": "^/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard(?:/)?$"
+    },
+    {
+      "page": "/dashboard/analytics",
+      "regex": "^/dashboard/analytics(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/analytics(?:/)?$"
+    },
+    {
+      "page": "/dashboard/categories",
+      "regex": "^/dashboard/categories(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/categories(?:/)?$"
+    },
+    {
+      "page": "/dashboard/inventory",
+      "regex": "^/dashboard/inventory(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/inventory(?:/)?$"
+    },
+    {
+      "page": "/dashboard/purchases",
+      "regex": "^/dashboard/purchases(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/purchases(?:/)?$"
+    },
+    {
+      "page": "/dashboard/reports",
+      "regex": "^/dashboard/reports(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/reports(?:/)?$"
+    },
+    {
+      "page": "/dashboard/selling-price",
+      "regex": "^/dashboard/selling\\-price(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/selling\\-price(?:/)?$"
+    },
+    {
+      "page": "/dashboard/settings",
+      "regex": "^/dashboard/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/settings(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}
