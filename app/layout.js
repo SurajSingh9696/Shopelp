@@ -7,7 +7,10 @@ const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces" });
 
 export const metadata = {
   title: "Shopkeeper Helper",
-  description: "Manage inventory, purchases, pricing, and profits with clarity."
+  description: "Manage inventory, purchases, pricing, and profits with clarity.",
+  icons: {
+    icon: "/logo.png"
+  }
 };
 
 export default function RootLayout({ children }) {

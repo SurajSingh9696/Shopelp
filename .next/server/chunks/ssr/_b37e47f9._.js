@@ -1,3 +1,0 @@
-module.exports=[9270,(a,b,c)=>{"use strict";b.exports=a.r(42602).vendored.contexts.AppRouterContext},38783,(a,b,c)=>{"use strict";b.exports=a.r(42602).vendored["react-ssr"].ReactServerDOMTurbopackClient},19152,a=>{"use strict";var b=a.i(87924),c=a.i(12131),d=a.i(72131);function e(){let{theme:a,toggleTheme:e}=(0,c.useUIStore)(),[f,g]=(0,d.useState)(!1);return((0,d.useEffect)(()=>g(!0),[]),f)?(0,b.jsx)("button",{type:"button",onClick:e,className:"rounded-full border border-border bg-card/80 px-4 py-2 text-sm font-medium text-foreground shadow-sm backdrop-blur transition hover:bg-card hover:shadow-md","aria-label":"Toggle theme",children:"dark"===a?"☀️ Light":"🌙 Dark"}):null}a.s(["default",()=>e])}];
-
-//# sourceMappingURL=_b37e47f9._.js.map
