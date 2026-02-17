@@ -26,6 +26,7 @@ export default function PurchasesPage() {
   const [showForm, setShowForm] = useState(false);
   const [filterItemId, setFilterItemId] = useState("");
   const [filterPeriod, setFilterPeriod] = useState("all");
+  const [expandedPurchases, setExpandedPurchases] = useState(new Set());
 
   const loadData = async () => {
     setStatus("loading");
@@ -64,6 +65,8 @@ export default function PurchasesPage() {
 
   useEffect(() => {
     loadData();
+    // Reset expanded state when filters change
+    setExpandedPurchases(new Set());
   }, [filterItemId, filterPeriod]);
 
   const itemMap = useMemo(
@@ -150,6 +153,8 @@ export default function PurchasesPage() {
     setEditingId(null);
     setShowForm(false);
     await loadData();
+    // Reset expanded state when adding/updating purchases so new ones appear collapsed
+    setExpandedPurchases(new Set());
   };
 
   const normalizeLineItems = (purchase) => {
@@ -198,6 +203,18 @@ export default function PurchasesPage() {
     setEditingId(null);
     setShowForm(false);
     setError("");
+  };
+
+  const togglePurchaseExpanded = (purchaseId) => {
+    setExpandedPurchases((prev) => {
+      const next = new Set(prev);
+      if (next.has(purchaseId)) {
+        next.delete(purchaseId);
+      } else {
+        next.add(purchaseId);
+      }
+      return next;
+    });
   };
 
   const calculateLineItem = (line) => {
@@ -463,6 +480,10 @@ export default function PurchasesPage() {
                 ? purchase.totalProfit
                 : itemsList.reduce((sum, line) => sum + (line.profitPerBox || 0) * (line.quantity || 0), 0);
 
+              const isExpanded = expandedPurchases.has(purchase._id);
+              const displayedItems = isExpanded ? itemsList : itemsList.slice(0, 2);
+              const hasMoreItems = itemsList.length > 2;
+
               return (
                 <div
                   key={purchase._id}
@@ -481,7 +502,7 @@ export default function PurchasesPage() {
                   </div>
 
                   <div className="space-y-2">
-                    {itemsList.map((line, index) => {
+                    {displayedItems.map((line, index) => {
                       const item = itemMap.get(line.itemId?.toString?.() || line.itemId);
                       return (
                         <div
@@ -508,6 +529,23 @@ export default function PurchasesPage() {
                       );
                     })}
                   </div>
+
+                  {hasMoreItems && (
+                    <button
+                      onClick={() => togglePurchaseExpanded(purchase._id)}
+                      className="text-xs text-primary font-semibold hover:underline self-start"
+                    >
+                      {isExpanded ? (
+                        <>
+                          <span>▲ Show Less</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>▼ Show {itemsList.length - 2} More Items</span>
+                        </>
+                      )}
+                    </button>
+                  )}
 
                   {purchase.notes ? (
                     <p className="text-xs text-muted italic">{purchase.notes}</p>
