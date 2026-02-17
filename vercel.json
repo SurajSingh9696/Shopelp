@@ -1,0 +1,15 @@
+{
+  "env": {
+    "MONGODB_URI": "@mongodb_uri",
+    "JWT_ACCESS_SECRET": "@jwt_access_secret",
+    "JWT_REFRESH_SECRET": "@jwt_refresh_secret",
+    "NEXT_PUBLIC_BASE_URL": "@app_base_url"
+  },
+  "build": {
+    "env": {
+      "MONGODB_URI": "@mongodb_uri",
+      "JWT_ACCESS_SECRET": "@jwt_access_secret",
+      "JWT_REFRESH_SECRET": "@jwt_refresh_secret"
+    }
+  }
+}
