@@ -6,7 +6,7 @@ const sora = Sora({ subsets: ["latin"], variable: "--font-sora" });
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces" });
 
 export const metadata = {
-  title: "Shopkeeper Helper",
+  title: "Shopelp - Inventory & Profit Management",
   description: "Manage inventory, purchases, pricing, and profits with clarity.",
   icons: {
     icon: "/logo.png"
