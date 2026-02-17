@@ -1,4 +1,4 @@
-# Shopkeeper Helper - Complete Feature List
+# Shopelp - Complete Feature List
 
 ## 🎯 Core Concept
 

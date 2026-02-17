@@ -103,7 +103,7 @@ export default function DashboardSidebar() {
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
               Dashboard
             </p>
-            <h2 className="mt-1 text-lg font-semibold">Shopkeeper Helper</h2>
+            <h2 className="mt-1 text-lg font-semibold">Shopelp</h2>
           </div>
         ) : (
           <div className="flex-1 text-center">

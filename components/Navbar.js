@@ -13,7 +13,7 @@ export default function Navbar() {
       className="fixed left-0 right-0 top-0 z-40 mx-auto flex w-full items-center justify-between border-b border-border/50 bg-card/50 px-6 py-4 backdrop-blur md:px-12"
     >
       <Link href="/" className="text-lg font-semibold tracking-tight text-foreground">
-        Shopkeeper Helper
+        Shopelp
       </Link>
       <nav className="hidden items-center gap-6 text-sm text-muted md:flex">
         <Link href="#features" className="transition hover:text-primary">

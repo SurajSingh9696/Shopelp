@@ -1,4 +1,4 @@
-# Shopkeeper Helper - Complete Inventory & Profit Management System
+# Shopelp - Complete Inventory & Profit Management System
 
 A modern, full-stack shopkeeping platform designed for tracking inventory with big packet (box) containing small packets, wholesale purchases, pricing, profit insights, analytics, and export-ready reports.
 

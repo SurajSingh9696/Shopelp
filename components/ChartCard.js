@@ -44,6 +44,7 @@ export default function ChartCard({
               <XAxis
                 dataKey={xKey}
                 ticks={xTicks}
+                interval={0}
                 tickFormatter={(value) => labelMap.get(value) || value}
                 stroke={isDark ? "#94A3B8" : "#64748b"}
                 fontSize={12}

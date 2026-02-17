@@ -36,7 +36,7 @@ export default function Hero() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-lg text-muted"
         >
-          Shopkeeper Helper tracks costs, selling prices, and profits in one place.
+          Shopelp tracks costs, selling prices, and profits in one place.
           Stay ahead with clean dashboards, visual trends, and instant PDF reports.
         </motion.p>
         <div className="flex flex-wrap gap-3">
