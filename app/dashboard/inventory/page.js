@@ -168,12 +168,33 @@ export default function InventoryPage() {
         throw new Error("CSV file is empty or invalid");
       }
 
-      // Parse CSV
-      const headers = lines[0].split(",").map(h => h.trim());
+      // Parse CSV - simple parser that handles basic CSV format
+      const parseCSVLine = (line) => {
+        const values = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          
+          if (char === '"') {
+            inQuotes = !inQuotes;
+          } else if (char === ',' && !inQuotes) {
+            values.push(current.trim());
+            current = '';
+          } else {
+            current += char;
+          }
+        }
+        values.push(current.trim());
+        return values;
+      };
+
+      const headers = parseCSVLine(lines[0]);
       const items = [];
 
       for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(",").map(v => v.trim());
+        const values = parseCSVLine(lines[i]);
         if (values.length !== headers.length) continue;
 
         const item = {};
@@ -194,6 +215,7 @@ export default function InventoryPage() {
       const response = await fetch("/api/items/import", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ items })
       });
 
@@ -216,10 +238,42 @@ export default function InventoryPage() {
   };
 
   const downloadTemplate = () => {
+    // Check if there are existing items
+    if (items.length === 0) {
+      // Download empty template
+      const link = document.createElement("a");
+      link.href = "/inventory-template.csv";
+      link.download = "inventory-template.csv";
+      link.click();
+      return;
+    }
+
+    // Export current inventory as CSV
+    const headers = ["sku", "name", "category", "description", "stock", "smallPacketsPerBox", "sellingPricePerSmallPacket", "unit"];
+    const csvRows = [headers.join(",")];
+
+    items.forEach(item => {
+      const row = [
+        item.sku || "",
+        `"${item.name}"`,
+        `"${item.category}"`,
+        `"${(item.description || "").replace(/"/g, '""')}"`,
+        item.stock || 0,
+        item.smallPacketsPerBox || 1,
+        item.sellingPricePerSmallPacket || 0,
+        item.unit || "box"
+      ];
+      csvRows.push(row.join(","));
+    });
+
+    const csvContent = csvRows.join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
-    link.href = "/inventory-template.csv";
-    link.download = "inventory-template.csv";
+    const url = URL.createObjectURL(blob);
+    link.href = url;
+    link.download = `inventory-${new Date().toISOString().split('T')[0]}.csv`;
     link.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -430,13 +484,20 @@ export default function InventoryPage() {
             <div>
               <h3 className="text-base font-semibold text-foreground">Import Results</h3>
               <div className="mt-3 space-y-2">
-                <p className="text-sm">
-                  <span className="text-primary font-semibold">✓ {importResults.imported} items</span> imported successfully
-                </p>
+                {importResults.created > 0 && (
+                  <p className="text-sm">
+                    <span className="text-primary font-semibold">✓ {importResults.created} items</span> created
+                  </p>
+                )}
+                {importResults.updated > 0 && (
+                  <p className="text-sm">
+                    <span className="text-blue-600 dark:text-blue-400 font-semibold">↻ {importResults.updated} items</span> updated
+                  </p>
+                )}
                 {importResults.failed > 0 && (
                   <div>
                     <p className="text-sm">
-                      <span className="text-danger font-semibold">✗ {importResults.failed} items</span> failed to import
+                      <span className="text-danger font-semibold">✗ {importResults.failed} items</span> failed
                     </p>
                     {importResults.details.failed.length > 0 && (
                       <div className="mt-2 text-xs text-muted space-y-1">
