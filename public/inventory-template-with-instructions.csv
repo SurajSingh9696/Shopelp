@@ -1,0 +1,17 @@
+# HOW TO USE THIS TEMPLATE
+# 1. Delete these comment lines (starting with #)
+# 2. Keep the header row (line with column names)
+# 3. Fill in your items data starting from row 2
+# 4. Save the file as CSV
+# 5. Upload via the "Import CSV" button in Inventory page
+#
+# REQUIRED COLUMNS: name, category, smallPacketsPerBox, sellingPricePerSmallPacket
+# OPTIONAL COLUMNS: description, stock, unit
+#
+# EXAMPLE DATA BELOW ↓
+name,category,description,stock,smallPacketsPerBox,sellingPricePerSmallPacket,unit
+Bada Kamla Pasand,Pan Masala,Premium quality pan masala with rich flavor,10,39,6,box
+Chota Kamla Pasand,Pan Masala,Small pack pan masala for quick sales,15,60,4,box
+Badi Rajshree,Pan Masala,Large rajshree premium pack,8,30,6,box
+Parle-G Biscuit,Biscuits,Classic glucose biscuits family pack,25,12,5,box
+Britannia Good Day,Biscuits,Butter cookies family pack,18,10,8,box

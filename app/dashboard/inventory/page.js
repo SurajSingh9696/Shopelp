@@ -26,6 +26,8 @@ export default function InventoryPage() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [importResults, setImportResults] = useState(null);
   const debouncedQuery = useDebouncedValue(query, 300);
 
   const loadData = async () => {
@@ -150,12 +152,86 @@ export default function InventoryPage() {
     setError("");
   };
 
+  const handleCSVUpload = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setImporting(true);
+    setImportResults(null);
+    setError("");
+
+    try {
+      const text = await file.text();
+      const lines = text.split("\n").filter(line => line.trim());
+      
+      if (lines.length < 2) {
+        throw new Error("CSV file is empty or invalid");
+      }
+
+      // Parse CSV
+      const headers = lines[0].split(",").map(h => h.trim());
+      const items = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(",").map(v => v.trim());
+        if (values.length !== headers.length) continue;
+
+        const item = {};
+        headers.forEach((header, index) => {
+          item[header] = values[index];
+        });
+
+        if (item.name && item.category) {
+          items.push(item);
+        }
+      }
+
+      if (items.length === 0) {
+        throw new Error("No valid items found in CSV");
+      }
+
+      // Send to API
+      const response = await fetch("/api/items/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items })
+      });
+
+      const result = await response.json();
+      
+      if (!result.success) {
+        throw new Error(result.error || "Failed to import items");
+      }
+
+      setImportResults(result.data);
+      await loadData();
+      
+      // Reset file input
+      event.target.value = "";
+    } catch (err) {
+      setError(err.message || "Failed to process CSV file");
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const downloadTemplate = () => {
+    const link = document.createElement("a");
+    link.href = "/inventory-template.csv";
+    link.download = "inventory-template.csv";
+    link.click();
+  };
+
   return (
     <div className="space-y-3 sm:space-y-4 lg:space-y-6">
       <div className="rounded-2xl border border-border bg-card p-3 sm:p-4 lg:p-6 text-foreground shadow-soft">
         <h2 className="text-base sm:text-lg lg:text-xl font-semibold">Inventory Management</h2>
         <p className="mt-2 text-xs sm:text-sm text-muted">
           Track items with big packets (boxes) containing small packets. Set prices per small packet.
+          <br />
+          <span className="inline-flex items-center gap-1 mt-1">
+            💡 <span className="font-medium">Tip:</span> Use CSV import to add multiple items at once. Download the template to get started.
+          </span>
         </p>
         <div className="mt-4 sm:mt-6 grid gap-2 sm:gap-3 lg:gap-4 grid-cols-2 lg:grid-cols-4">
           <div className="rounded-xl bg-card p-3 sm:p-4">
@@ -178,12 +254,34 @@ export default function InventoryPage() {
       </div>
 
       {!showForm ? (
-        <button
-          onClick={() => setShowForm(true)}
-          className="w-full sm:w-auto rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 touch-manipulation min-h-[44px]"
-        >
-          + Add New Item
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button
+            onClick={() => setShowForm(true)}
+            className="w-full sm:w-auto rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 touch-manipulation min-h-[44px]"
+          >
+            + Add New Item
+          </button>
+          
+          <div className="flex flex-col sm:flex-row gap-3">
+            <label className="relative w-full sm:w-auto rounded-full border-2 border-primary bg-card px-6 py-3 text-sm font-semibold text-primary transition hover:bg-primary/10 cursor-pointer touch-manipulation min-h-[44px] flex items-center justify-center">
+              <input
+                type="file"
+                accept=".csv"
+                onChange={handleCSVUpload}
+                disabled={importing}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              />
+              <span>{importing ? "Importing..." : "📁 Import CSV"}</span>
+            </label>
+            
+            <button
+              onClick={downloadTemplate}
+              className="w-full sm:w-auto rounded-full border border-border px-6 py-3 text-sm font-medium transition hover:bg-card touch-manipulation min-h-[44px]"
+            >
+              ⬇️ Download Template
+            </button>
+          </div>
+        </div>
       ) : (
         <div className="rounded-2xl border border-border bg-card p-3 sm:p-4 lg:p-6 text-foreground shadow-soft">
           <h3 className="text-base sm:text-lg font-semibold">
@@ -326,7 +424,40 @@ export default function InventoryPage() {
           </form>
         </div>
       )}
-
+      {importResults && (
+        <div className="rounded-2xl border border-border bg-card p-4 md:p-6 shadow-soft">
+          <div className="flex items-start justify-between">
+            <div>
+              <h3 className="text-base font-semibold text-foreground">Import Results</h3>
+              <div className="mt-3 space-y-2">
+                <p className="text-sm">
+                  <span className="text-primary font-semibold">✓ {importResults.imported} items</span> imported successfully
+                </p>
+                {importResults.failed > 0 && (
+                  <div>
+                    <p className="text-sm">
+                      <span className="text-danger font-semibold">✗ {importResults.failed} items</span> failed to import
+                    </p>
+                    {importResults.details.failed.length > 0 && (
+                      <div className="mt-2 text-xs text-muted space-y-1">
+                        {importResults.details.failed.map((fail, idx) => (
+                          <p key={idx}>• {fail.name}: {fail.error}</p>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+            <button
+              onClick={() => setImportResults(null)}
+              className="text-muted hover:text-foreground"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
       <div className="rounded-2xl border border-border bg-card p-4 md:p-6 text-foreground shadow-soft">
         <div className="flex flex-col gap-3 md:gap-4 md:flex-row md:items-center md:justify-between">
           <h3 className="text-base md:text-lg font-semibold">Inventory List</h3>
